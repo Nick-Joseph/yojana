@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "249363615823",
+    "project_id": "yojana-cd5f2",
+    "storage_bucket": "yojana-cd5f2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:249363615823:android:c8853909350403511eda3a",
+        "android_client_info": {
+          "package_name": "com.example.yojana"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "249363615823-p8e9ub1o7v1q6mumnoq984kk2h1q0c6c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDslEWxQ7pw_cf75S3oOtcT3Uxg7llHwY8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "249363615823-p8e9ub1o7v1q6mumnoq984kk2h1q0c6c.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "249363615823-5u443nctc8bomttj2e6duj804ie74rue.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.yojana"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
