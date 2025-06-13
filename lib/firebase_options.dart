@@ -64,7 +64,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '249363615823',
     projectId: 'yojana-cd5f2',
     storageBucket: 'yojana-cd5f2.firebasestorage.app',
-    iosClientId: '249363615823-5u443nctc8bomttj2e6duj804ie74rue.apps.googleusercontent.com',
+    iosClientId:
+        '249363615823-5u443nctc8bomttj2e6duj804ie74rue.apps.googleusercontent.com',
     iosBundleId: 'com.example.yojana',
   );
 
@@ -74,7 +75,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '249363615823',
     projectId: 'yojana-cd5f2',
     storageBucket: 'yojana-cd5f2.firebasestorage.app',
-    iosClientId: '249363615823-5u443nctc8bomttj2e6duj804ie74rue.apps.googleusercontent.com',
+    iosClientId:
+        '249363615823-5u443nctc8bomttj2e6duj804ie74rue.apps.googleusercontent.com',
     iosBundleId: 'com.example.yojana',
   );
 
