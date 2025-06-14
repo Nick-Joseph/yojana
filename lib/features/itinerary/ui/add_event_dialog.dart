@@ -31,20 +31,25 @@ class _AddEventDialogState extends State<AddEventDialog> {
           mode: CupertinoDatePickerMode.time,
           use24hFormat: false,
           initialDateTime: DateTime(
-              2020,
-              1,
-              1,
-              _selectedTime?.hour ?? now.hour,
-              _selectedTime?.minute ?? now.minute),
+            2020,
+            1,
+            1,
+            _selectedTime?.hour ?? now.hour,
+            _selectedTime?.minute ?? now.minute,
+          ),
           onDateTimeChanged: (dateTime) {
             setState(() {
               _selectedTime = TimeOfDay(
-                  hour: dateTime.hour, minute: dateTime.minute);
+                hour: dateTime.hour,
+                minute: dateTime.minute,
+              );
               final hour = _selectedTime!.hourOfPeriod == 0
                   ? 12
                   : _selectedTime!.hourOfPeriod;
               final minute = _selectedTime!.minute.toString().padLeft(2, '0');
-              final period = _selectedTime!.period == DayPeriod.am ? 'AM' : 'PM';
+              final period = _selectedTime!.period == DayPeriod.am
+                  ? 'AM'
+                  : 'PM';
               widget.timeController.text = '$hour:$minute $period';
             });
           },
@@ -84,10 +89,7 @@ class _AddEventDialogState extends State<AddEventDialog> {
           onPressed: () => Navigator.of(context).pop(),
           child: const Text('Cancel'),
         ),
-        ElevatedButton(
-          onPressed: widget.onAdd,
-          child: const Text('Add'),
-        ),
+        ElevatedButton(onPressed: widget.onAdd, child: const Text('Add')),
       ],
     );
   }
