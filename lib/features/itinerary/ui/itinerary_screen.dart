@@ -9,6 +9,8 @@ import 'package:go_router/go_router.dart';
 import '../bloc/itinerary_bloc.dart';
 import '../models/itinerary.dart' as itinerary_model;
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import 'package:yojana/features/itinerary/ui/itinerary_timeline.dart';
+import 'package:yojana/features/itinerary/ui/add_event_dialog.dart';
 
 class ItineraryScreen extends StatefulWidget {
   final itinerary_model.Itinerary? itinerary;
@@ -117,153 +119,16 @@ class _ItineraryScreenState extends State<ItineraryScreen> {
     if (_startDate == null || _endDate == null) return [];
     final daysCount = _endDate!.difference(_startDate!).inDays + 1;
     if (_selectedDayIndex >= daysCount) return [];
-    final dayDate = _startDate!.add(Duration(days: _selectedDayIndex));
     final dayModel = _days.firstWhere(
-      (d) => d != null && d.day == _selectedDayIndex + 1,
+      (d) => d.day == _selectedDayIndex + 1,
       orElse: () =>
           itinerary_model.ItineraryDay(day: _selectedDayIndex + 1, events: []),
     );
     return [
-      // Timeline UI for events
-      ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: dayModel.events.length,
-        itemBuilder: (context, idx) {
-          final event = dayModel.events[idx];
-          final isLast = idx == dayModel.events.length - 1;
-          final icon = _getEventIcon(event.activity);
-          return Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                children: [
-                  Container(
-                    constraints: const BoxConstraints(
-                      minWidth: 32,
-                      maxWidth: 32,
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      event.time,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  if (!isLast)
-                    Container(
-                      constraints: const BoxConstraints(
-                        minWidth: 2,
-                        maxWidth: 2,
-                        minHeight: 32,
-                        maxHeight: 32,
-                      ),
-                      margin: const EdgeInsets.symmetric(vertical: 2),
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          left: BorderSide(
-                            color: Colors.grey,
-                            width: 2,
-                            style: BorderStyle.solid,
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-              const SizedBox(width: 8),
-              Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.blue.shade50,
-                      shape: BoxShape.circle,
-                    ),
-                    padding: const EdgeInsets.all(8),
-                    child: Icon(icon, color: Colors.blue, size: 24),
-                  ),
-                  if (!isLast)
-                    Container(
-                      constraints: const BoxConstraints(
-                        minWidth: 2,
-                        maxWidth: 2,
-                        minHeight: 32,
-                        maxHeight: 32,
-                      ),
-                      margin: const EdgeInsets.symmetric(vertical: 2),
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          left: BorderSide(
-                            color: Colors.grey,
-                            width: 2,
-                            style: BorderStyle.solid,
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 16),
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 8,
-                    horizontal: 12,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.08),
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        event.activity,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                        ),
-                      ),
-                      // Optionally add subtitle or duration here
-                    ],
-                  ),
-                ),
-              ),
-              // Checkmark for completed (future: based on time)
-              const Icon(Icons.check_circle, color: Colors.green, size: 20),
-            ],
-          );
-        },
-      ),
-      const SizedBox(height: 12),
-      Center(
-        child: ElevatedButton.icon(
-          icon: const Icon(Icons.add),
-          label: const Text('Add Event'),
-          onPressed: () {
-            _showAddEventDialog(dayModel.day);
-          },
-        ),
-      ),
-      const SizedBox(height: 16),
-      Center(
-        child: OutlinedButton.icon(
-          icon: const Icon(Icons.map),
-          label: const Text('Show Map'),
-          onPressed: () {
-            // TODO: Implement map view
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Map view coming soon!')),
-            );
-          },
-        ),
+      ItineraryTimeline(
+        dayModel: dayModel,
+        onAddEvent: _showAddEventDialog,
+        getEventIcon: _getEventIcon,
       ),
     ];
   }
@@ -296,49 +161,26 @@ class _ItineraryScreenState extends State<ItineraryScreen> {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: const Text('Add Event'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: timeController,
-                decoration: const InputDecoration(
-                  labelText: 'Time (e.g. 6:00)',
-                ),
-              ),
-              TextField(
-                controller: activityController,
-                decoration: const InputDecoration(labelText: 'Activity'),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  final event = itinerary_model.ItineraryEvent(
-                    time: timeController.text,
-                    activity: activityController.text,
-                  );
-                  final idx = _days.indexWhere((d) => d.day == day);
-                  if (idx != -1) {
-                    _days[idx].events.add(event);
-                  } else {
-                    _days.add(
-                      itinerary_model.ItineraryDay(day: day, events: [event]),
-                    );
-                  }
-                });
-                Navigator.of(context).pop();
-              },
-              child: const Text('Add'),
-            ),
-          ],
+        return AddEventDialog(
+          timeController: timeController,
+          activityController: activityController,
+          onAdd: () {
+            setState(() {
+              final event = itinerary_model.ItineraryEvent(
+                time: timeController.text,
+                activity: activityController.text,
+              );
+              final idx = _days.indexWhere((d) => d.day == day);
+              if (idx != -1) {
+                _days[idx].events.add(event);
+              } else {
+                _days.add(
+                  itinerary_model.ItineraryDay(day: day, events: [event]),
+                );
+              }
+            });
+            Navigator.of(context).pop();
+          },
         );
       },
     );

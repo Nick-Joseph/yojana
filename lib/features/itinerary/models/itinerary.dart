@@ -63,10 +63,22 @@ class ItineraryDay {
 }
 
 class ItineraryEvent {
-  final String time;
-  final String activity;
-  ItineraryEvent({required this.time, required this.activity});
-  Map<String, dynamic> toMap() => {'time': time, 'activity': activity};
-  factory ItineraryEvent.fromMap(Map<String, dynamic> map) =>
-      ItineraryEvent(time: map['time'], activity: map['activity']);
+  String time;
+  String activity;
+  bool checked;
+  ItineraryEvent({
+    required this.time,
+    required this.activity,
+    this.checked = false,
+  });
+  Map<String, dynamic> toMap() => {
+    'time': time,
+    'activity': activity,
+    'checked': checked,
+  };
+  factory ItineraryEvent.fromMap(Map<String, dynamic> map) => ItineraryEvent(
+    time: map['time'],
+    activity: map['activity'],
+    checked: map['checked'] ?? false,
+  );
 }

@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
             final authBloc = context.read<AuthBloc>();
             final router = createAppRouter(authBloc);
             return MaterialApp.router(
-              title: 'Flutter Demo',
+              debugShowCheckedModeBanner: false,
               theme: ThemeData(
                 colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
               ),
