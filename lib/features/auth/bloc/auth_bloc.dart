@@ -2,47 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:yojana/features/auth/data/auth_repository.dart';
 
-// Events
-enum AuthStatus { unknown, authenticated, unauthenticated }
-
-abstract class AuthEvent extends Equatable {
-  @override
-  List<Object?> get props => [];
-}
-
-class AuthCheckRequested extends AuthEvent {}
-
-class AuthSignInRequested extends AuthEvent {
-  final String email;
-  final String password;
-  AuthSignInRequested(this.email, this.password);
-  @override
-  List<Object?> get props => [email, password];
-}
-
-class AuthSignUpRequested extends AuthEvent {
-  final String email;
-  final String password;
-  AuthSignUpRequested(this.email, this.password);
-  @override
-  List<Object?> get props => [email, password];
-}
-
-class AuthSignOutRequested extends AuthEvent {}
-
-// States
-class AuthState extends Equatable {
-  final AuthStatus status;
-  final String? error;
-  const AuthState({required this.status, this.error});
-  factory AuthState.unknown() => const AuthState(status: AuthStatus.unknown);
-  factory AuthState.authenticated() =>
-      const AuthState(status: AuthStatus.authenticated);
-  factory AuthState.unauthenticated([String? error]) =>
-      AuthState(status: AuthStatus.unauthenticated, error: error);
-  @override
-  List<Object?> get props => [status, error];
-}
+part 'auth_event.dart';
+part 'auth_state.dart';
 
 // Bloc
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
