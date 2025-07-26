@@ -229,18 +229,6 @@ class _ItineraryTimelineState extends State<ItineraryTimeline> {
             onPressed: () => widget.onAddEvent(widget.dayModel.day),
           ),
         ),
-        SizedBox(height: 16),
-        Center(
-          child: OutlinedButton.icon(
-            icon: const Icon(Icons.map),
-            label: const Text('Show Map'),
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Map view coming soon!')),
-              );
-            },
-          ),
-        ),
       ],
     );
   }

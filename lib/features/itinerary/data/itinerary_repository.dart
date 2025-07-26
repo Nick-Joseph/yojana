@@ -22,4 +22,11 @@ class ItineraryRepository {
     }
     return null;
   }
+
+  Future<void> deleteItinerary(Itinerary itinerary) async {
+    final doc = await _collection.doc(itinerary.id).get();
+    if (doc.exists) {
+      return _collection.doc(itinerary.id).delete();
+    }
+  }
 }

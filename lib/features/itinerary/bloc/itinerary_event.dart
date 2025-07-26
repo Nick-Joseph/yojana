@@ -19,3 +19,11 @@ class SaveItinerary extends ItineraryEvent {
   @override
   List<Object?> get props => [itinerary, userId];
 }
+
+class DeleteItinerary extends ItineraryEvent {
+  final Itinerary itinerary;
+  final String userId;
+  DeleteItinerary(this.itinerary, this.userId);
+  @override
+  List<Object?> get props => [itinerary, userId];
+}

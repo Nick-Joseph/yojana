@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:yojana/core/utlis/shimmer.dart';
 import '../models/itinerary.dart';
 import '../data/itinerary_repository.dart';
 
@@ -21,6 +22,16 @@ class ItineraryBloc extends Bloc<ItineraryEvent, ItineraryState> {
     on<SaveItinerary>((event, emit) async {
       try {
         await repository.saveItinerary(event.itinerary);
+        emit(ItineraryLoading());
+        add(LoadItineraries(event.userId));
+      } catch (e) {
+        emit(ItineraryError(e.toString()));
+      }
+    });
+    on<DeleteItinerary>((event, emit) async {
+      try {
+        await repository.deleteItinerary(event.itinerary);
+        emit(ItineraryLoading());
         add(LoadItineraries(event.userId));
       } catch (e) {
         emit(ItineraryError(e.toString()));
